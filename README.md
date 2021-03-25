@@ -9,3 +9,5 @@ programm for traking bugs for further analysis
 pandas
 PyQt5
 Может еще configparser и shutil не помню идут ли они в базовой библиотеке
+
+Запускать через Main_file.py
