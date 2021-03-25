@@ -1,0 +1,4 @@
+,test_module,test_case,err_text,err_type,activ_err,adapt_err,datesave,year_save,month_save,day_save,tasktype,cmstype,checkbox_vers,time_on_work,redmine_number,manager,imposer,programmer,tester_coment,prokuror,iteration,frontenddevop,sitename
+0,Общие параметры сайта,Почта,тест ошибка 1,imposer,1,0,2021-03-25,2021,3,25,Разработка,Канапе,2,1,1,Заглушка,Заглушка,Заглушка,,Jeka,1,0,test test
+1,Наполнение,Элементы страницы,тест ошибка 2,programmer,1,0,2021-03-25,2021,3,25,Разработка,Канапе,2,1,1,Заглушка,Заглушка,Заглушка,,Jeka,1,0,test test
+2,Наполнение,необходимо уточнение,тест ошибка 3,manager,1,0,2021-03-25,2021,3,25,Разработка,Канапе,2,1,1,Заглушка,Заглушка,Заглушка,,Jeka,1,0,test test
