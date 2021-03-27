@@ -1,0 +1,2 @@
+,test_module,test_case,err_text,err_type,activ_err,adapt_err,datesave,year_save,month_save,day_save,tasktype,cmstype,checkbox_vers,time_on_work,redmine_number,manager,imposer,programmer,tester_coment,prokuror,iteration,frontenddevop,sitename
+0,Общие параметры сайта,Редиректы,123123,imposer,1,1,2021-03-27,2021,3,27,Разработка,Канапе,2,1,1,Заглушка,Заглушка,Заглушка,,Jeka,1,0,test2

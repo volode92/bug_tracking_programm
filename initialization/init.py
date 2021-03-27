@@ -14,10 +14,10 @@ pathdirect = config.get("Settings", "pathdirect")  # для тест листа(
 file_name = config.get("Settings", "file_name")
 tests_list = config.get("Settings", "tests_list")
 work_spase = config.get("Settings", "work_spase")
-file_obj = pathdirect + tests_list
+file_obj = work_spase + tests_list
 reader = pd.read_csv(file_obj)
-tasklist = list(pd.read_csv('tasklist.csv', encoding='UTF-8')['task_type'])
-cmslist = list(pd.read_csv('cmslist.csv', encoding='UTF-8')['name_cms'])
+tasklist = list(pd.read_csv('files/tasklist.csv', encoding='UTF-8')['task_type'])
+cmslist = list(pd.read_csv('files/cmslist.csv', encoding='UTF-8')['name_cms'])
 
 
 def uniq_module(reader):
@@ -93,6 +93,7 @@ def save_settings():
     config.set("Settings", "pathdirect", pathdirect)
     config.set("Settings", "file_name", file_name)
 
+
     with open('settings.ini', "w") as config_file:
         config.write(config_file)
 
@@ -148,28 +149,28 @@ def directlist(pathdirect):
 
 
 def writehelp(help):
-    with open(pathdirect + '/help.txt', "w", encoding='UTF8') as file:
+    with open(work_spase + '/files/help.txt', "w", encoding='UTF8') as file:
         file.write(help)
 
 
 def readhelp():
-    with open(pathdirect + '/help.txt', "r", encoding='UTF8') as file:
+    with open(work_spase + '/files/help.txt', "r", encoding='UTF8') as file:
         help = file.read()
     return help
 
 def worker_list(department, activat=1):
     if department == 0:
-        df = pd.read_csv(work_spase + r'\imposer.csv', encoding='UTF-8')
+        df = pd.read_csv(work_spase + r'/files/imposer.csv', encoding='UTF-8')
         if activat:
             df = df[df.activ == 1]
         return df.name.unique()
     elif department == 1:
-        df = pd.read_csv(work_spase + r'\manager.csv', encoding='UTF-8')
+        df = pd.read_csv(work_spase + r'/files/manager.csv', encoding='UTF-8')
         if activat:
             df = df[df.activ == 1]
         return df.name.unique()
     else:
-        df = pd.read_csv(work_spase + r'\proger.csv', encoding='UTF-8')
+        df = pd.read_csv(work_spase + r'/files/proger.csv', encoding='UTF-8')
         if activat:
             df = df[df.activ == 1]
         return df.name.unique()
