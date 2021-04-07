@@ -10,4 +10,4 @@ pandas
 PyQt5
 Может еще configparser и shutil не помню идут ли они в базовой библиотеке
 
-Запускать через Main_file.py
+Запускать через Main_file.py или Main_v2.py
