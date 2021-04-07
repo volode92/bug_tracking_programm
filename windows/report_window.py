@@ -19,7 +19,24 @@ class ReportWindow(QtWidgets.QWidget):
         self.setGeometry(300, 300, 300, 50)
         self.setWindowTitle('Тут смотрим ошибки')
         self.dferr = []
+        self.create_interface_report()
+
+    def create_interface_report(self):
         self.mainBox = QtWidgets.QVBoxLayout()
+        #первая линия
+        self.first_filter_line_report()
+
+        # вторая линия фильтра
+        self.second_filter_line_report()
+        # разные типы вывода
+        self.botton_line_type_report()
+
+        self.work_area_report()
+
+        self.setLayout(self.mainBox)
+
+
+    def first_filter_line_report(self):
         self.bottonline = QtWidgets.QHBoxLayout()
         self.bottoncreatereport = QtWidgets.QPushButton('Сформировать отчет')
         self.bottoncreatereport.clicked.connect(self.updateerrlistall)
@@ -63,8 +80,12 @@ class ReportWindow(QtWidgets.QWidget):
         self.bottonline.addWidget(self.typecmschecbox)
         self.bottonline.addWidget(lbltypecms)
         self.bottonline.addWidget(self.typecms)
+        self.widgforbottonline = QtWidgets.QWidget()
+        self.widgforbottonline.setLayout(self.bottonline)
+        self.widgforbottonline.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        self.mainBox.addWidget(self.widgforbottonline)
 
-        # вторая линия фильтра
+    def second_filter_line_report(self):
         self.filterline = QtWidgets.QHBoxLayout()
 
         self.filterline.addWidget(QtWidgets.QLabel("|"))
@@ -104,8 +125,9 @@ class ReportWindow(QtWidgets.QWidget):
         self.widgforbottonline2 = QtWidgets.QWidget()
         self.widgforbottonline2.setLayout(self.filterline)
         self.widgforbottonline2.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        self.mainBox.addWidget(self.widgforbottonline2)
 
-        # разные типы вывода
+    def botton_line_type_report(self):
         self.outtypeline = QtWidgets.QHBoxLayout()
         self.alllist = QtWidgets.QPushButton('все ошибки')
         self.alllist.clicked.connect(self.alllistreport)
@@ -136,16 +158,12 @@ class ReportWindow(QtWidgets.QWidget):
         self.errtype.addItems(tmp)
         self.outtypeline.addWidget(self.errtype)
 
-        self.widgforbottonline = QtWidgets.QWidget()
-        self.widgforbottonline.setLayout(self.bottonline)
-        self.widgforbottonline.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        self.mainBox.addWidget(self.widgforbottonline)
-        self.mainBox.addWidget(self.widgforbottonline2)
-
         self.widgfortypeerr = QtWidgets.QWidget()
         self.widgfortypeerr.setLayout(self.outtypeline)
         self.widgfortypeerr.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         self.mainBox.addWidget(self.widgfortypeerr)
+
+    def work_area_report(self):
 
         self.graphline = QtWidgets.QHBoxLayout()
 
@@ -218,8 +236,7 @@ class ReportWindow(QtWidgets.QWidget):
         self.widgforgraphline.setLayout(self.graphline)
         self.widgforgraphline.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.mainBox.addWidget(self.widgforgraphline)
-
-        self.setLayout(self.mainBox)
+        
 
     def open_all_tree(self):
         for i in range(self.qlist.topLevelItemCount()):
@@ -486,7 +503,7 @@ class ErrorListWidget(QtWidgets.QWidget):
             if self.separation:
                 # верстальщики
                 self.imposer_block = QtWidgets.QWidget()
-                lbvers = QtWidgets.QLabel("лажи верстальщиков", self)
+                lbvers = QtWidgets.QLabel("Отдел верстальщиков", self)
                 self.imposer_block_w_l = QtWidgets.QVBoxLayout()
                 self.imposer_block_w_l.addWidget(lbvers)
                 self.imposer_block.setLayout(self.imposer_block_w_l)
@@ -497,7 +514,7 @@ class ErrorListWidget(QtWidgets.QWidget):
                 self.add_item_list('imposer')
                 # менеджеры
                 self.manager_block = QtWidgets.QWidget()
-                lbvers = QtWidgets.QLabel("лажи менеджеров", self)
+                lbvers = QtWidgets.QLabel("Отдел менеджеров", self)
                 self.manager_block_w_l = QtWidgets.QVBoxLayout()
                 self.manager_block_w_l.addWidget(lbvers)
                 self.manager_block.setLayout(self.manager_block_w_l)
@@ -508,7 +525,7 @@ class ErrorListWidget(QtWidgets.QWidget):
                 self.add_item_list('manager')
                 # прогеры
                 self.prog_block = QtWidgets.QWidget()
-                lbvers = QtWidgets.QLabel("лажи прогеров", self)
+                lbvers = QtWidgets.QLabel("Отдел прогеров", self)
                 self.prog_block_w_l = QtWidgets.QVBoxLayout()
                 self.prog_block_w_l.addWidget(lbvers)
                 self.prog_block.setLayout(self.prog_block_w_l)
@@ -530,7 +547,7 @@ class ErrorListWidget(QtWidgets.QWidget):
                 self.add_item_list('all')
         elif self.buttype == 0:
             self.imposer_block = QtWidgets.QWidget()
-            lbvers = QtWidgets.QLabel("лажи верстальщиков", self)
+            lbvers = QtWidgets.QLabel("Отдел верстальщиков", self)
             self.imposer_block_w_l = QtWidgets.QVBoxLayout()
             self.imposer_block_w_l.addWidget(lbvers)
             self.imposer_block.setLayout(self.imposer_block_w_l)
@@ -541,7 +558,7 @@ class ErrorListWidget(QtWidgets.QWidget):
             self.add_item_list('imposer')
         elif self.buttype == 1:
             self.manager_block = QtWidgets.QWidget()
-            lbvers = QtWidgets.QLabel("лажи менеджеров", self)
+            lbvers = QtWidgets.QLabel("Отдел менеджеров", self)
             self.manager_block_w_l = QtWidgets.QVBoxLayout()
             self.manager_block_w_l.addWidget(lbvers)
             self.manager_block.setLayout(self.manager_block_w_l)
@@ -552,7 +569,7 @@ class ErrorListWidget(QtWidgets.QWidget):
             self.add_item_list('manager')
         else:
             self.prog_block = QtWidgets.QWidget()
-            lbvers = QtWidgets.QLabel("лажи прогеров", self)
+            lbvers = QtWidgets.QLabel("Отдел прогеров", self)
             self.prog_block_w_l = QtWidgets.QVBoxLayout()
             self.prog_block_w_l.addWidget(lbvers)
             self.prog_block.setLayout(self.prog_block_w_l)
@@ -680,7 +697,7 @@ class DetailErrorListWidget(QtWidgets.QWidget):
         # верстальщики
         if len(self.param[self.param['err_type'] == 'imposer']) != 0:
             self.imposer_block = QtWidgets.QWidget()
-            lbvers = QtWidgets.QLabel("лажи верстальщиков", self)
+            lbvers = QtWidgets.QLabel("Отдел верстальщиков", self)
             self.imposer_block_w_l = QtWidgets.QVBoxLayout()
             self.imposer_block_w_l.addWidget(lbvers)
             self.imposer_block.setLayout(self.imposer_block_w_l)
@@ -692,7 +709,7 @@ class DetailErrorListWidget(QtWidgets.QWidget):
         # менеджеры
         if len(self.param[self.param['err_type'] == 'manager']) != 0:
             self.manager_block = QtWidgets.QWidget()
-            lbvers = QtWidgets.QLabel("лажи менеджеров", self)
+            lbvers = QtWidgets.QLabel("Отдел менеджеров", self)
             self.manager_block_w_l = QtWidgets.QVBoxLayout()
             self.manager_block_w_l.addWidget(lbvers)
             self.manager_block.setLayout(self.manager_block_w_l)
@@ -704,7 +721,7 @@ class DetailErrorListWidget(QtWidgets.QWidget):
         # прогеры
         if len(self.param[self.param['err_type'] == 'programmer']) != 0:
             self.prog_block = QtWidgets.QWidget()
-            lbvers = QtWidgets.QLabel("лажи прогеров", self)
+            lbvers = QtWidgets.QLabel("Отдел прогеров", self)
             self.prog_block_w_l = QtWidgets.QVBoxLayout()
             self.prog_block_w_l.addWidget(lbvers)
             self.prog_block.setLayout(self.prog_block_w_l)

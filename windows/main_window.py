@@ -16,9 +16,9 @@ class Main(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.testmodule = initail.uniq_module(initail.reader)  # считываем все модули
-        self.testmoduleactiv = self.testmodule[0]  # в качестве основногго берем первый
+        self.testmoduleactiv = self.testmodule[0]  # в качестве основного берем первый
         self.testcaselist = initail.test_case_list(initail.reader,
-                                                   self.testmoduleactiv)  # считываем список юлоков в модуле
+                                                   self.testmoduleactiv)  # считываем список блоков в модуле
         self.errordeptype = None  # типы ошибок по отделу
         self.senderold = None
         self.testcaseactiv = None

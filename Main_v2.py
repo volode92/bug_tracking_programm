@@ -15,9 +15,6 @@ from windows.help_window import *
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main_win = Main()
-    # main = ChangeModul('Адаптивка','необходимо уточнение', 0)
-    # print(main.testmodule_w)
-    # main_win = ReportWindow()
     main_win.show()
     sys.exit(app.exec_())
 

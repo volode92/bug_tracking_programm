@@ -92,7 +92,7 @@ class SaveParams(QtWidgets.QDialog):
         self.mainBox.addLayout(self.infoverst)
 
         self.infoprog = QtWidgets.QHBoxLayout()
-        lbinfoprog = QtWidgets.QLabel("Програмист", self)
+        lbinfoprog = QtWidgets.QLabel("Программист", self)
         self.comboinfoprog = QtWidgets.QComboBox(self)
         self.comboinfoprog.addItems(initail.worker_list(department=2, activat=1))
         self.infoprog.addWidget(lbinfoprog)
@@ -126,12 +126,10 @@ class SaveParams(QtWidgets.QDialog):
         self.setLayout(self.mainBox)
 
     def accept(self):
-        print('do')
         initail.save_param_prodject(self.datacheckcol.date(), self.combotesttype.currentText(),
                                     self.combocmstype.currentText(), self.checboxtest.checkState(),
                                     self.inputtesttime.text(), self.tesknumberinp.text(),
                                     self.comboinfomened.currentText(), self.comboinfoverst.currentText(),
                                     self.comboinfoprog.currentText(), self.testcoment.toPlainText(), self.prokuror,
                                     self.iterationnum.text(), 0)
-        print('posle')
         self.close()
