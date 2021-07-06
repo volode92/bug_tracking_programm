@@ -10,6 +10,7 @@ from windows.main_window import *
 from windows.report_window import *
 from windows.save_window import *
 from windows.help_window import *
+from lshmodel.lsh import *
 
 class Main(QtWidgets.QMainWindow):
 
@@ -27,6 +28,7 @@ class Main(QtWidgets.QMainWindow):
         self.errcount = len(self.buglist)
 
         self.create_interface()
+        self.find_forwst = Forest_search()
 
 
     def create_interface(self):
@@ -82,7 +84,7 @@ class Main(QtWidgets.QMainWindow):
         # создаем
         self.butandspis = QtWidgets.QHBoxLayout(self)
         self.adapterrlayout = QtWidgets.QVBoxLayout(self)
-        self.inputerrorlayoyt = QtWidgets.QHBoxLayout(self)
+        self.inputerrorlayoyt = QtWidgets.QVBoxLayout(self)
         self.buttonSendErron = QtWidgets.QHBoxLayout()
 
         # формируем
@@ -135,9 +137,17 @@ class Main(QtWidgets.QMainWindow):
         self.butandspis.addLayout(self.layoutblocks)
         # поле ввода ошибки
         self.inputerror = QtWidgets.QTextEdit()
+        self.inputerror.textChanged.connect(self.text_change)
         self.inputerror.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-        self.inputerror.setMaximumSize(2000, 2000)
+        self.inputerror.setMaximumSize(570, 104)
+        self.inputerror.setMinimumSize(560, 104)
         self.inputerrorlayoyt.addWidget(self.inputerror)
+
+        self.helpline = QtWidgets.QListWidget()
+        self.inputerrorlayoyt.addWidget(self.helpline)
+        self.helpline.setMaximumSize(570, 2000)
+        self.helpline.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
+        self.helpline.setWordWrap(True)
         # галочка адапт ошибки
         self.adapterr = QtWidgets.QCheckBox("Кнопка адаптивной ошибки", self)
         self.adapterrlayout.addWidget(self.adapterr)
@@ -213,6 +223,22 @@ class Main(QtWidgets.QMainWindow):
         self.buglist = initail.read_errors_df()
         self.errcount = len(self.buglist)
         self.updateUIlist()
+
+    def text_change(self):
+        text = self.inputerror.toPlainText()
+        if len(text.split()) < 2:
+            list_tmp = ['надо ввести еще что то']
+        else:
+            list_tmp = self.find_forwst.predict(text)
+            #list_tmp = set(list_tmp)
+        self.print_help(list_tmp)
+
+    def print_help(self, list_help):
+        self.helpline.clear()
+        for el in list_help:
+            trp = QtWidgets.QListWidgetItem(el)
+            trp.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+            self.helpline.addItem(trp)
 
     def on_browsefolder_clicked(self):
         """Выбираем папку кликом"""
