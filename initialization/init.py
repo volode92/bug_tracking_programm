@@ -8,16 +8,26 @@ import shutil
 config = configparser.ConfigParser()
 config.read('settings.ini')
 
-#project_list = config.get("Settings", "path_proj")
-path = config.get("Settings", "path")
-pathdirect = config.get("Settings", "pathdirect")  # для тест листа(d ,wlw
-file_name = config.get("Settings", "file_name")
-tests_list = config.get("Settings", "tests_list")
+# project_list = config.get("Settings", "path_proj")
+# path = config.get("Settings", "path")
+# pathdirect = config.get("Settings", "pathdirect")  # для тест листа(d ,wlw
+# file_name = config.get("Settings", "file_name")
+# tests_list = config.get("Settings", "tests_list")
+# work_spase = config.get("Settings", "work_spase")
+
+
 work_spase = config.get("Settings", "work_spase")
+file_name = config.get("Settings", "file_name")
+path = work_spase + '/project/' + file_name
+pathdirect = work_spase + '/project'
+tests_list = r"\files\testlist.csv"
+
+
 file_obj = work_spase + tests_list
 reader = pd.read_csv(file_obj)
-tasklist = list(pd.read_csv('files/tasklist.csv', encoding='UTF-8')['task_type'])
-cmslist = list(pd.read_csv('files/cmslist.csv', encoding='UTF-8')['name_cms'])
+
+tasklist = list(pd.read_csv(work_spase + '/files/tasklist.csv', encoding='UTF-8')['task_type'])
+cmslist = list(pd.read_csv(work_spase + '/files/cmslist.csv', encoding='UTF-8')['name_cms'])
 
 
 def uniq_module(reader):
