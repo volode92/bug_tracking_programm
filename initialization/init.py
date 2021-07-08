@@ -99,8 +99,6 @@ def create_directories(direct):
 
 
 def save_settings():
-    config.set("Settings", "path", path)
-    config.set("Settings", "pathdirect", pathdirect)
     config.set("Settings", "file_name", file_name)
 
 

@@ -26,6 +26,7 @@ class Main(QtWidgets.QMainWindow):
         self.blockanable = None
         self.buglist = initail.read_errors_df()
         self.errcount = len(self.buglist)
+        self.shifterr = 1
 
         self.create_interface()
         self.find_forwst = Forest_search()
@@ -70,15 +71,20 @@ class Main(QtWidgets.QMainWindow):
         helpsee = QtWidgets.QAction('Вызвать хелп', self)
         helpsee.setShortcut('F1')
         helpsee.triggered.connect(self.call_help)
+        featuresMenu = QtWidgets.QMenu("Допплюшки", self)
         wallposition = QtWidgets.QAction('Поверх окон', self)
         wallposition.setShortcut('Ctrl+F')
         wallposition.triggered.connect(self.flagchangetop)
+        featuresMenu.addAction(wallposition)
+        shiftErrInd = QtWidgets.QAction('Добавление сдвига', self)
+        shiftErrInd.triggered.connect(self.add_shift_ind)
+        featuresMenu.addAction(shiftErrInd)
         self.menuBar().addAction(profjectfile)
         self.menuBar().addAction(browsefolder)
         self.menuBar().addAction(errsave)
         self.menuBar().addAction(errsee)
         self.menuBar().addAction(helpsee)
-        self.menuBar().addAction(wallposition)
+        self.menuBar().addMenu(featuresMenu)
 
     def left_colms(self):
         # создаем
@@ -334,7 +340,7 @@ class Main(QtWidgets.QMainWindow):
         """Изменение пункта ошибки"""
         text = self.report.item(self.report.currentRow()).text()
         text = text.split('. ')
-        id = int(text.pop(0)) - 1
+        id = int(text.pop(0)) - self.shifterr
         testerr = ". ".join(text)
         self.buglist.loc[id]['err_text'] = testerr
         initail.save_errors(self.buglist)
@@ -367,7 +373,7 @@ class Main(QtWidgets.QMainWindow):
         """Добавление ошибок по типу"""
         index_list = list(self.buglist[(self.buglist['err_type'] == err_type) & (self.buglist['activ_err'] == 1)].index)
         for ind in index_list:
-            text = str(ind + 1) + '. ' + str(self.buglist.iloc[ind]['err_text'])
+            text = str(ind + self.shifterr) + '. ' + str(self.buglist.iloc[ind]['err_text'])
             self.reporttext += text + '\n'
             trp = QtWidgets.QListWidgetItem(text)
             trp.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
@@ -382,8 +388,11 @@ class Main(QtWidgets.QMainWindow):
                                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                     QtWidgets.QMessageBox.No)
             if result == QtWidgets.QMessageBox.Yes:
-                id = int(self.report.item(self.report.currentRow()).text().split('. ')[0]) - 1
-                self.buglist.loc[id]['activ_err'] = 0
+                id = int(self.report.item(self.report.currentRow()).text().split('. ')[0]) - self.shifterr
+                if id == self.buglist.shape[0]-1:
+                    self.buglist = self.buglist.drop([id])
+                else:
+                    self.buglist.loc[id]['activ_err'] = 0
         initail.save_errors(self.buglist)
         self.updateReportList()
 
@@ -401,14 +410,14 @@ class Main(QtWidgets.QMainWindow):
                     self.errordeptype = 'manager'
                 else:
                     self.errordeptype = 'programmer'
-                id = int(self.report.item(self.report.currentRow()).text().split('. ')[0]) - 1
+                id = int(self.report.item(self.report.currentRow()).text().split('. ')[0]) - self.shifterr
                 self.buglist.loc[id]['err_type'] = self.errordeptype
         initail.save_errors(self.buglist)
         self.updateReportList()
 
     def editmodulfromreport(self):
         if self.report.currentRow() != -1:
-            id = int(self.report.item(self.report.currentRow()).text().split('. ')[0]) - 1
+            id = int(self.report.item(self.report.currentRow()).text().split('. ')[0]) - self.shifterr
             test_module_err = self.buglist.loc[id].test_module
             test_case_err = self.buglist.loc[id].test_case
         self.changemodulwind = ChangeModul(str(test_module_err), str(test_case_err), id)
@@ -447,3 +456,9 @@ class Main(QtWidgets.QMainWindow):
 
     def clean_list(self):
         pass
+
+    def add_shift_ind(self):
+        text, ok = QtWidgets.QInputDialog.getText(self, 'Смещение ошибок', 'Введи с какой ошибки начинать:')
+        if ok:
+            self.shifterr = int(text) + 1
+        self.updateUIlist()
