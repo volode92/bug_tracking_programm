@@ -30,6 +30,7 @@ class Main(QtWidgets.QMainWindow):
 
         self.create_interface()
         self.find_forwst = Forest_search()
+        self.setWindowIcon(QtGui.QIcon(initail.work_spase + r'\files\favicon.png'))
 
 
     def create_interface(self):
@@ -253,6 +254,9 @@ class Main(QtWidgets.QMainWindow):
         # равной пути к выбранной директории
         if file_name:  # не продолжать выполнение, если пользователь не выбрал директорию
             file_name = file_name.split('/')
+            print(file_name)
+            if file_name[-1] in ['Test','Live']:
+                file_name.pop()
             initail.file_name = file_name[-1]
             initail.path = str(initail.pathdirect) + '/' + initail.file_name
             self.setWindowTitle(initail.file_name)
@@ -460,5 +464,8 @@ class Main(QtWidgets.QMainWindow):
     def add_shift_ind(self):
         text, ok = QtWidgets.QInputDialog.getText(self, 'Смещение ошибок', 'Введи с какой ошибки начинать:')
         if ok:
-            self.shifterr = int(text) + 1
+            if int(text) > 0:
+                self.shifterr = int(text)
+            else:
+                self.shifterr = 1
         self.updateUIlist()
